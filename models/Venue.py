@@ -21,4 +21,4 @@ class VenueSchema(Schema):
     closing = fields.Str(required=True)
     lat = fields.Int(required=True)
     lon = fields.Int(required=True)
-    events = fields.Nested('EventSchema', many=True)
+    events = fields.Nested('EventSchema', many=True, exclude=('venue', ))

@@ -3,11 +3,13 @@ from pony.orm import db_session
 from marshmallow import ValidationError
 from app import db
 from models.Event import Event, EventSchema
+from lib.secure_route import secure_route
 
 router = Blueprint(__name__, 'events')
 
 @router.route('/events', methods=['GET'])
 @db_session
+@secure_route
 def index():
     schema = EventSchema(many=True)
     events = Event.select()
@@ -17,6 +19,7 @@ def index():
 
 @router.route('/events', methods=['POST'])
 @db_session
+@secure_route
 def create():
 
     schema = EventSchema()
@@ -31,6 +34,7 @@ def create():
 
 @router.route('/events/<int:event_id>', methods=['GET'])
 @db_session
+@secure_route
 def show(event_id):
     schema = EventSchema()
     event = Event.get(id=event_id)
@@ -41,6 +45,7 @@ def show(event_id):
 
 @router.route('/events/<int:event_id>', methods=['PUT'])
 @db_session
+@secure_route
 def update(event_id):
 
     schema = EventSchema()
@@ -61,6 +66,7 @@ def update(event_id):
 
 @router.route('/events/<int:event_id>', methods=['DELETE'])
 @db_session
+@secure_route
 def delete(event_id):
 
     event = Event.get(id=event_id)

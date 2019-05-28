@@ -3,11 +3,19 @@ from pony.orm import db_session
 from app import db
 from models.Event import Event
 from models.Venue import Venue
+from models.User import User, UserSchema
+
 
 db.drop_all_tables(with_all_data=True)
 db.create_tables()
 
 with db_session():
+    schema = UserSchema()
+    current_user = User(
+        username='leeofham',
+        email='leeofham@gmail.com',
+        password_hash=schema.generate_hash('pass'),
+    )
     gen_pub1 = Venue(
         name='Generic pub',
         address='123 street',
@@ -38,7 +46,7 @@ with db_session():
         start='17:00',
         end='22:00',
         venue=gen_pub1,
-        created_by='liam'
+        created_by=current_user
     )
 
     Event(
@@ -46,7 +54,7 @@ with db_session():
         start='15:00',
         end='18:00',
         venue=gen_pub1,
-        created_by='liam'
+        created_by=current_user
     )
 
     db.commit()

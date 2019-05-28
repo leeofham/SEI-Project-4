@@ -9,7 +9,7 @@ class Event(db.Entity):
     start = Required(str)
     end = Required(str)
     venue = Required('Venue')
-    created_by = Required(str)
+    created_by = Required('User')
 
 class EventSchema(Schema):
     id = fields.Int(dump_only=True)
@@ -18,7 +18,8 @@ class EventSchema(Schema):
     end = fields.Str(required=True)
     venue = fields.Nested('VenueSchema', dump_only=True, exclude=('events', ))
     venue_id = fields.Int(load_only=True)
-    created_by = fields.Str(required=True)
+    created_by = fields.Nested('UserSchema', exclude=('events', 'email'), dump_only=True)
+    created_by_id = fields.Int(load_only=True)
 
 @post_load
 def load_venue(_self, data):
