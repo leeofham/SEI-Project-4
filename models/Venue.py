@@ -1,6 +1,7 @@
 from app import db
-from pony.orm import Required
+from pony.orm import Required, Set
 from marshmallow import Schema, fields
+
 
 class Venue(db.Entity):
     name = Required(str)
@@ -9,6 +10,7 @@ class Venue(db.Entity):
     closing = Required(str)
     lat = Required(int)
     lon = Required(int)
+    events = Set('Event')
 
 
 class VenueSchema(Schema):
@@ -19,3 +21,4 @@ class VenueSchema(Schema):
     closing = fields.Str(required=True)
     lat = fields.Int(required=True)
     lon = fields.Int(required=True)
+    events = fields.Nested('EventSchema', many=True)
