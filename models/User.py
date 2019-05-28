@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import bcrypt
 import jwt
 from pony.orm import Required, Set
-from marshmallow import Schema, fields, post_load, validates_schema, ValidationError, validates
+from marshmallow import Schema, fields, post_load, validates_schema, ValidationError
 from app import db
 from config.environment import secret
 
@@ -37,7 +37,7 @@ class UserSchema(Schema):
     email = fields.Str(required=True, load_only=True)
     password = fields.Str(load_only=True)
     password_confirmation = fields.Str(load_only=True)
-    events = fields.Nested('EventSchema', many=True, exclude=('venue', 'created_by'))
+    events = fields.Nested('EventSchema', many=True, exclude=('created_by', ))
 
 
     #basic method
