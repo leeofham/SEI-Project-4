@@ -2,7 +2,7 @@ from app import db
 from pony.orm import Required
 from marshmallow import Schema, fields
 
-class Event(db.Entity):
+class Venue(db.Entity):
     name = Required(str)
     address = Required(str)
     opening = Required(str)
@@ -11,7 +11,7 @@ class Event(db.Entity):
     lon = Required(int)
 
 
-class EventSchema(Schema):
+class VenueSchema(Schema):
     id = fields.Int(dump_only=True)
     name = fields.Str(required=True)
     address = fields.Str(required=True)
