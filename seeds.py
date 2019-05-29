@@ -42,7 +42,7 @@ with db_session():
     )
 
     Event(
-        date=datetime.datetime(2019, 6, 14).strftime("%d/%m/%Y"),
+        date=datetime.date(2019, 6, 14).strftime("%d/%m/%Y"),
         start='17:00',
         end='22:00',
         venue=gen_pub1,
@@ -50,7 +50,7 @@ with db_session():
     )
 
     Event(
-        date=datetime.datetime(2019, 7, 12).strftime("%d/%m/%Y"),
+        date=datetime.date(2019, 7, 12).strftime("%d/%m/%Y"),
         start='15:00',
         end='18:00',
         venue=gen_pub1,

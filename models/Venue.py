@@ -5,11 +5,11 @@ from marshmallow import Schema, fields
 
 class Venue(db.Entity):
     name = Required(str)
-    address = Required(str)
-    opening = Required(str)
-    closing = Required(str)
-    lat = Required(int)
-    lon = Required(int)
+    # address = Required(str)
+    # opening = Required(str)
+    # closing = Required(str)
+    # lat = Required(int)
+    # lon = Required(int)
     events = Set('Event')
 
 
