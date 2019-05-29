@@ -13,6 +13,7 @@ const LoginForm = ({ handleChange, handleSubmit }) => {
             name="email"
             placeholder="eg: john.smith@gmail.com"
             onChange={handleChange}
+
           />
         </div>
       </div>

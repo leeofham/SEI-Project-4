@@ -1,6 +1,7 @@
 import React from 'react'
 import LoginForm from './LoginForm'
 import axios from 'axios'
+import Auth from '../../lib/Auth'
 
 class Home extends React.Component{
   constructor() {
@@ -23,14 +24,15 @@ class Home extends React.Component{
   handleSubmit(e) {
     e.preventDefault()
 
-    // const token = Auth.getToken()
-
-    axios.post('/api/login', this.state.data, {
-      // headers: { 'Authorization': `Bearer ${token}` }
-    })
-      .then(() => this.props.history.push('/map'))
+    axios.post('/api/login', this.state.data)
+      .then(res => {
+        Auth.setToken(res.data.token)
+        this.props.history.push('/map')
+      })
+      .catch(() => this.setState({ error: 'Invalid credentials' }))
   }
   render(){
+    console.log(this.state)
     return(
       <section className="hero is-fullheight-with-navbar">
         <div className="hero-body">
