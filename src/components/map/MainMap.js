@@ -16,50 +16,56 @@ class MainMap extends React.Component{
         lat: -0.127683,
         lng: 51.507332
       },
-      venues: []
+      pubs: null,
+      marker: {},
+      zoom: [12],
+      name: ''
     }
-
   }
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition((position) => {
       const { latitude, longitude } = position.coords
-      this.setState({ currentLocation: { lng: latitude, lat: longitude }})
+      this.setState({ currentLocation: {lng: latitude, lat: longitude }})
     })
-    axios.get('https://api.yelp.com/v3/businesses/search',{
-      headers: {
-        'Authorization': `Bearer ${process.env.YELP_API_KEY}` },
-      params: {
-        location: 'London',
-        term: 'pub',
-        limit: 50
-      }
-    })
-      .then(res => this.setState({ venues: res}))
 
+    axios('/api/yelp/pubs')
+      .then(res => this.setState({ pubs: res.data }))
+
+  }
+
+  markerClicked(marker){
+    this.setState({marker: marker.name})
+    this.setState({currentLocation: {lat: marker.coordinates.longitude, lng: marker.coordinates.latitude}})
+    this.setState({name: marker.name})
+    this.setState({zoom: [15]})
   }
 
 
   render(){
-    console.log(this.state.data)
+    console.log(this.state)
     return(
       <Map
         style = "mapbox://styles/mapbox/streets-v9"
         center = {[this.state.currentLocation.lat, this.state.currentLocation.lng ]}
-        zoom = {[13]}
+        zoom = {this.state.zoom}
         containerStyle={{
           height: '100vh',
           width: '100vw'
         }}>
-
-        <Marker
-          coordinates={[-0.127683, 51.507332]}
-          anchor="bottom">
-          <img
-            src='./assets/map-pin.png'
-            width='30px'
-          />
-        </Marker>
+        {this.state.pubs && this.state.pubs.businesses.map(marker =>
+          <Marker
+            key={marker.id}
+            coordinates={[marker.coordinates.longitude, marker.coordinates.latitude]}
+            onClick={() => this.markerClicked(marker)}
+            anchor="bottom">
+            <h2 className='title'>{this.state.name}</h2>
+            <img
+              src='./assets/map-pin.png'
+              width='30px'
+            />
+          </Marker>
+        )}
       </Map>
     )
   }
