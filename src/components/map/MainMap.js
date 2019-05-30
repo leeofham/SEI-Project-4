@@ -20,7 +20,8 @@ class MainMap extends React.Component{
       pubs: null,
       marker: null,
       zoom: [12],
-      active: false
+      active: false,
+      pubId: ''
     }
   }
 
@@ -40,6 +41,7 @@ class MainMap extends React.Component{
     this.setState({ marker })
     this.setState({currentLocation: {lat: marker.coordinates.longitude, lng: marker.coordinates.latitude}})
     this.setState({zoom: [15]})
+    this.setState({pubId: marker.id})
   }
 
 
@@ -52,7 +54,6 @@ class MainMap extends React.Component{
           </div>
         </section>
       )}
-    console.log(this.state)
     return(
       <Map
         style = "mapbox://styles/mapbox/streets-v9"
@@ -88,7 +89,7 @@ class MainMap extends React.Component{
               <p className="is-size-6">{this.state.marker.name}</p>
               <p>{this.state.marker.location.address1}</p>
               <p>{this.state.marker.location.zip_code}</p>
-              <Link to='/pub/id'>More info</Link>
+              <Link to={`/pub/${this.state.pubId}`}>More info</Link>
               <br />
               <Link to='/event/create'>Create an Event!</Link>
 
