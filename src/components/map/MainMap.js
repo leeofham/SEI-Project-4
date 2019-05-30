@@ -1,5 +1,6 @@
 import React from 'react'
-import ReactMapboxGl, { Marker } from 'react-mapbox-gl'
+import ReactMapboxGl, { Marker, Popup } from 'react-mapbox-gl'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 
@@ -13,13 +14,13 @@ class MainMap extends React.Component{
 
     this.state = {
       currentLocation: {
-        lat: -0.127683,
-        lng: 51.507332
+        lat: false,
+        lng: false
       },
       pubs: null,
-      marker: {},
+      marker: null,
       zoom: [12],
-      name: ''
+      active: false
     }
   }
 
@@ -35,14 +36,22 @@ class MainMap extends React.Component{
   }
 
   markerClicked(marker){
-    this.setState({marker: marker.name})
+    this.setState({active: true})
+    this.setState({ marker })
     this.setState({currentLocation: {lat: marker.coordinates.longitude, lng: marker.coordinates.latitude}})
-    this.setState({name: marker.name})
     this.setState({zoom: [15]})
   }
 
 
   render(){
+    {if(this.state.currentLocation.lat === false)
+      return(
+        <section className='section'>
+          <div className='container'>
+            <h1>Loading..</h1>
+          </div>
+        </section>
+      )}
     console.log(this.state)
     return(
       <Map
@@ -59,13 +68,32 @@ class MainMap extends React.Component{
             coordinates={[marker.coordinates.longitude, marker.coordinates.latitude]}
             onClick={() => this.markerClicked(marker)}
             anchor="bottom">
-            <h2 className='title'>{this.state.name}</h2>
+
             <img
               src='./assets/map-pin.png'
               width='30px'
             />
           </Marker>
+
         )}
+        {this.state.active &&
+
+          <Popup
+            coordinates={[this.state.marker.coordinates.longitude, this.state.marker.coordinates.latitude]}
+            anchor="bottom-left"
+            offset={[-2, -40]}
+
+          >
+            <div>
+              <p className="is-size-6">{this.state.marker.name}</p>
+              <p>{this.state.marker.location.address1}</p>
+              <p>{this.state.marker.location.zip_code}</p>
+              <Link to='/pub/id'>More info</Link>
+              <br />
+              <Link to='/event/create'>Create an Event!</Link>
+
+            </div>
+          </Popup>}
       </Map>
     )
   }
