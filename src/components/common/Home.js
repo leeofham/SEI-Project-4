@@ -14,6 +14,7 @@ class Home extends React.Component{
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+
   }
 
   handleChange(e) {
@@ -31,8 +32,8 @@ class Home extends React.Component{
       })
       .catch(() => this.setState({ error: 'Invalid credentials' }))
   }
+
   render(){
-    console.log(this.state)
     return(
       <section className="hero is-fullheight-with-navbar">
         <div className="hero-body">

@@ -18,27 +18,12 @@ with db_session():
     )
     gen_pub1 = Venue(
         name='Generic pub',
-        address='123 street',
-        opening='15:00',
-        closing='00:00',
-        lat=15,
-        lon=13
     )
     gen_pub2 = Venue(
         name='Generic pub2',
-        address='456 street',
-        opening='15:00',
-        closing='00:00',
-        lat=19,
-        lon=12
     )
     gen_pub3 = Venue(
         name='Generic pub3',
-        address='789 street',
-        opening='15:00',
-        closing='00:00',
-        lat=34,
-        lon=52
     )
 
     Event(

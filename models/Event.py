@@ -16,14 +16,14 @@ class EventSchema(Schema):
     date = fields.Str(required=True)
     start = fields.Str(required=True)
     end = fields.Str(required=True)
-    venue = fields.Nested('VenueSchema', dump_only=True, exclude=('events', ))
-    venue_id = fields.Int(load_only=True)
-    created_by = fields.Nested('UserSchema', exclude=('events', 'email'), dump_only=True)
-    created_by_id = fields.Int(load_only=True)
+    venue = fields.Nested('VenueSchema', exclude=('events', ))
+    created_by = fields.Nested('UserSchema', exclude=('events', ))
 
-@post_load
-def load_venue(_self, data):
-    data['venue'] = Venue.get(id=data['venue_id'])
-    del data['venue_id']
-
-    return data
+    @post_load
+    def load_venue(self, data):
+        venue = Venue.get(yelp_id=data['venue']['yelp_id'])
+        if not venue:
+            venue = Venue(**data['venue'])
+        data['venue'] = venue
+        print(data)
+        return data
