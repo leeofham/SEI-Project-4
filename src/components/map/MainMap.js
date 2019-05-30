@@ -27,14 +27,13 @@ class MainMap extends React.Component{
       zoom: [12],
       active: false,
       pubId: '',
-      modal: false
+      modal: false,
+      eventListings: []
     }
 
     this.toggleCreate = this.toggleCreate.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.getIndex = this.getIndex.bind(this)
-
 
   }
 
@@ -63,16 +62,7 @@ class MainMap extends React.Component{
     axios.post('/api/events', this.state.events, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
-      .then(() => this.props.history.push('/map'))
-  }
-
-  getIndex(id){
-    // get pub id
-    const array = this.state.pubs.businesses
-    const index = array.findIndex(array => array.id === id)
-    // loop through array searching for id
-    // once find save the index in state.events{venue_d: id}
-    this.setState({events: {venue: index}})
+      .then(() => this.setState({modal: !this.state.modal}))
   }
 
   markerClicked(marker){
@@ -81,8 +71,18 @@ class MainMap extends React.Component{
     this.setState({currentLocation: {lat: marker.coordinates.longitude, lng: marker.coordinates.latitude}})
     this.setState({zoom: [15]})
     this.setState({pubId: marker.id})
-    this.getIndex(marker.id)
+    this.setState({events: {
+      venue: {
+        yelp_id: marker.id,
+        name: marker.name,
+        lat: marker.coordinates.latitude,
+        lng: marker.coordinates.longitude,
+        image: marker.image_url
+      }
+    }
+    })
   }
+
 
   toggleCreate(){
     this.setState({modal: !this.state.modal})
