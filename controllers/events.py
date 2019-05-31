@@ -9,7 +9,6 @@ router = Blueprint(__name__, 'events')
 
 @router.route('/events', methods=['GET'])
 @db_session
-@secure_route
 def index():
     schema = EventSchema(many=True)
     events = Event.select()
@@ -32,7 +31,6 @@ def create():
 
 @router.route('/events/<int:event_id>', methods=['GET'])
 @db_session
-@secure_route
 def show(event_id):
     schema = EventSchema()
     event = Event.get(id=event_id)
@@ -43,7 +41,6 @@ def show(event_id):
 
 @router.route('/events/<int:event_id>', methods=['PUT'])
 @db_session
-@secure_route
 def update(event_id):
 
     schema = EventSchema()
