@@ -1,5 +1,105 @@
+$darkBlue: #354696;
+$buttonPrimary: #67BCE6;
+$buttonPrimaryHover: rgb(103, 130, 210);
+$buttonDanger:#FF5633;
+$buttonDangerHover:#FC7855;
+$grey: #e3e3e3;
+$darkGrey: #444444;
+
+@import url('https://fonts.googleapis.com/css?family=Oswald&display=swap');
+
+.navbar{
+  // background-color: $darkBlue;
+  font-family: 'Oswald', sans-serif;
+  .container, .navbar-brand, .navbar-item, .display.is-size-4{
+    // color: white;
+    font-weight:400;
+  }
+}
+
+button.button.is-primary{
+  background-color: $buttonPrimary;
+  font-family: 'Oswald', sans-serif;
+  color: $darkGrey;
+  font-weight: 600;
+  margin-right:20px;
+
+  &:hover{
+    background-color: $buttonPrimaryHover	;
+  }
+}
+
+button.button.is-danger{
+  background-color: $buttonDanger;
+  font-family: 'Oswald', sans-serif;
+  color: $darkGrey;
+  font-weight: 600;
+
+  &:hover{
+    background-color: $buttonDangerHover;
+  }
+}
+
+div.column.is-one-third-desktop.is-full-tablet.login-form{
+  background: $grey;
+  border: 1px solid $darkGrey;
+}
+
+div.hero-body{
+  background-color: $grey;
+}
+
+div.loading-image{
+  margin-top: -200px;
+  height:100vh;
+  background-image: url("https://cdn-images-1.medium.com/max/1200/1*fFC0LdzpExlP3VG93coZDA.gif");
+  background-size: cover;
+  background-position: top;
+}
+
 .control.has-icons-left {
   margin-top: 12px;
   margin-left: 13vw;
   width: 50vw;
+}
+
+div.hero-body{
+  background-image: url("/assets/home.jpg");
+  background-size: cover;
+  font-family: 'Oswald', sans-serif;
+
+  .column.is-one-third-desktop.is-full-tablet.home-title{
+    margin-right: 20%;
+    h1{
+      letter-spacing: 1.5px;
+      margin-bottom: 30px;
+    }
+  }
+}
+
+canvas.mapboxgl-canvas{
+  cursor: default;
+}
+
+div.mapboxgl-popup-content{
+  font-family: 'Oswald', sans-serif;
+  p.is-size-6{
+    font-size: 30px !important;
+    margin-bottom: 10px;
+  }
+  p{
+    font-size: 14px !important;
+  }
+  a{
+    font-size: 14px !important;
+    color: $buttonPrimary;
+    &:hover{
+      color: $buttonPrimaryHover;
+    }
+  }
+}
+
+div.modal-card{
+  font-family: 'Oswald', sans-serif;
+
 }

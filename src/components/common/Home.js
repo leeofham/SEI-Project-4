@@ -39,15 +39,15 @@ class Home extends React.Component{
         <div className="hero-body">
           <div className="container">
             <div className="columns is-centered is-multiline">
-              <div className="column is-half-desktop is-full-tablet">
+              <div className="column is-one-third-desktop is-full-tablet home-title">
                 <h1 className="title">
-                  SEI project 4
+                  Drinking sessions
                 </h1>
                 <h2 className="subtitle">
-                  Check out who is out in your area.
+                  The app that connects you with your friends in your local area, so you can arrange your next pub trip.
                 </h2>
               </div>
-              <div className="column is-half-desktop is-full-tablet">
+              <div className="column is-one-third-desktop is-full-tablet login-form">
                 <LoginForm
                   handleChange={this.handleChange}
                   handleSubmit={this.handleSubmit}

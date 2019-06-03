@@ -1,12 +1,12 @@
 import React from 'react'
 import ReactMapboxGl, { Marker, Popup } from 'react-mapbox-gl'
-// import { Link } from 'react-router-dom'
-import axios from 'axios'
-import Create from '../events/Create'
-import Edit from '../events/Edit'
 
+import axios from 'axios'
 import Auth from '../../lib/Auth'
 
+import MainModal from '../modals/MainModal'
+import CreateModal from '../modals/CreateModal'
+import EditModal from '../modals/EditModal'
 
 const Map = ReactMapboxGl({
   accessToken: process.env.MAPBOX_API_KEY
@@ -40,8 +40,10 @@ class MainMap extends React.Component{
     this.toggleEdit = this.toggleEdit.bind(this)
     this.toggleListing = this.toggleListing.bind(this)
 
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChangeCreate = this.handleChangeCreate.bind(this)
+    this.handleSubmitCreate = this.handleSubmitCreate.bind(this)
+    this.handleChangeEdit = this.handleChangeEdit.bind(this)
+    this.handleSubmitEdit = this.handleSubmitEdit.bind(this)
 
     this.getListings = this.getListings.bind(this)
     this.showListings = this.showListings.bind(this)
@@ -49,7 +51,9 @@ class MainMap extends React.Component{
     this.getDayOfWeek = this.getDayOfWeek.bind(this)
 
     this.getEvent = this.getEvent.bind(this)
-
+    this.deleteEvent = this.deleteEvent.bind(this)
+    this.delete = this.delete.bind(this)
+    this.canModify = this.canModify.bind(this)
 
   }
 
@@ -61,23 +65,44 @@ class MainMap extends React.Component{
 
     axios('/api/yelp/pubs')
       .then(res => this.setState({ pubs: res.data }))
+    axios('/api/events')
+      .then(res => this.setState({ eventListings: res.data }))
   }
 
-  handleChange(e) {
-
+  handleChangeCreate(e) {
     const events = { ...this.state.events, [e.target.name]: e.target.value }
     this.setState({ events })
   }
 
-  handleSubmit(e) {
+  handleSubmitCreate(e) {
     e.preventDefault()
-
     const token = Auth.getToken()
-
     axios.post('/api/events', this.state.events, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(() => this.setState({create: !this.state.create}))
+  }
+
+  handleChangeEdit(e) {
+    const events = { ...this.state.events, [e.target.name]: e.target.value }
+    this.setState({ events })
+  }
+
+  handleSubmitEdit(e) {
+    e.preventDefault()
+    const token = Auth.getToken()
+    axios.put(`/api/events/${this.state.pubEventId}`, this.state.events, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(() => window.location.reload())
+  }
+
+  delete(e) {
+    const token = Auth.getToken()
+    axios.delete(`/api/events/${e}`,{
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(() => window.location.reload())
   }
 
   markerClicked(marker){
@@ -97,7 +122,10 @@ class MainMap extends React.Component{
     }
     })
   }
-
+  deleteEvent(){
+    this.setState({pubEventId: event.target.value})
+    this.delete(event.target.value)
+  }
 
   toggleCreate(){
     this.setState({create: !this.state.create})
@@ -111,7 +139,12 @@ class MainMap extends React.Component{
 
   getEvent(e){
     axios(`/api/events/${e}`)
-      .then(res => this.setState({ pubEvent: res.data }))
+      .then(res =>
+        this.setState({ pubEvent: res.data}))
+      .then(() => this.setState({events: this.state.pubEvent}))
+      .then(() => delete this.state.events.created_by)
+      .then(() => delete this.state.events.id)
+      .then(() => delete this.state.events.venue.id)
   }
 
   toggleListing(){
@@ -132,6 +165,10 @@ class MainMap extends React.Component{
     return this.state.eventListings.filter(event => event.venue.yelp_id === this.state.marker.id)
   }
 
+  canModify(user) {
+    return Auth.getPayload().sub === user
+  }
+
   getDayOfWeek(date) {
     const day = date.slice(0,3)
     const month = date.slice(3,5)
@@ -142,84 +179,40 @@ class MainMap extends React.Component{
   }
 
   render(){
-    {if(this.state.currentLocation.lat === false)
+    {if(!this.state.pubs)
       return(
-        <section className='section'>
-          <div className='container'>
-            <h1>Loading..</h1>
-          </div>
-        </section>
+        <div className='loading-image'></div>
       )}
     console.log(this.state)
     return(
       <main>
-        <div className={`modal ${this.state.listing ? ' is-active' : ''}`}>
-          <div className="modal-background"></div>
-          <div className="modal-card">
-            <header className="modal-card-head">
-              <p className="modal-card-title">Whos drinking here?</p>
-              <button className="delete" aria-label="close" onClick={this.toggleListing}></button>
-            </header>
-            <section className="modal-card-body">
-              {this.state.listing && this.filterArray().map(listing =>
-                <div key={listing.id}>
-                  <div className='level'>
-                    <div className='level-left'>
-                      <h2 className='subtitle'>{listing.date},</h2>
-                    </div>
-                    <div className='level-right'>
-                      <button className='button is-primary' onClick={this.toggleEdit} value={listing.id}>Edit</button>
-                      <button className='button is-danger'>Delete</button>
-                      <button className='button'>Attending</button>
-                    </div>
-                  </div>
-                  <div>
-                    {this.getDayOfWeek(listing.date)} - {listing.start} & {listing.end},<br/> Created by {listing.created_by.username} <hr/>
-                  </div>
-                </div>
-              )}
-            </section>
-          </div>
-        </div>
 
+        <MainModal
+          listing={this.state.listing}
+          toggleListing={this.toggleListing}
+          filterArray={this.filterArray}
+          canModify={this.canModify}
+          getDayOfWeek={this.getDayOfWeek}
+          toggleEdit={this.toggleEdit}
+          deleteEvent={this.deleteEvent}
+        />
 
-        <div className={`modal ${this.state.create ? ' is-active' : ''}`}>
-          <div className="modal-background"></div>
-          <div className="modal-card">
-            <header className="modal-card-head">
-              <p className="modal-card-title">Plan your next beer</p>
-              <button className="delete" aria-label="close" onClick={this.toggleCreate}></button>
-            </header>
-            <section className="modal-card-body">
-              <Create
-                handleChange={this.handleChange}
-                handleSubmit={this.handleSubmit}
-                pubId={this.state.marker.name}
+        <CreateModal
+          create={this.state.create}
+          toggleCreate={this.toggleCreate}
+          handleChangeCreate={this.handleChangeCreate}
+          handleSubmitCreate={this.handleSubmitCreate}
+          marker={this.state.marker}
+        />
 
-              />
-            </section>
-          </div>
-        </div>
-
-
-        <div className={`modal ${this.state.edit ? ' is-active' : ''}`}>
-          <div className="modal-background"></div>
-          <div className="modal-card">
-            <header className="modal-card-head">
-              <p className="modal-card-title">Plan your next beer</p>
-              <button className="delete" aria-label="close" onClick={this.toggleEdit}></button>
-            </header>
-            <section className="modal-card-body">
-              <Edit
-                handleChange={this.handleChange}
-                handleSubmit={this.handleSubmit}
-                pubId={this.state.marker.name}
-                pubEvent = {this.state.pubEvent}
-              />
-            </section>
-          </div>
-        </div>
-
+        <EditModal
+          edit={this.state.edit}
+          toggleEdit={this.toggleEdit}
+          handleChangeEdit={this.handleChangeEdit}
+          handleSubmitEdit={this.handleSubmitEdit}
+          marker={this.state.marker}
+          pubEvent={this.state.pubEvent}
+        />
 
         <Map
           style = "mapbox://styles/mapbox/streets-v9"
@@ -240,16 +233,16 @@ class MainMap extends React.Component{
                 src='./assets/map-pin.png'
                 width='30px'
               />
+
+
             </Marker>
-
           )}
-          {this.state.popup &&
 
+          {this.state.popup &&
           <Popup
             coordinates={[this.state.marker.coordinates.longitude, this.state.marker.coordinates.latitude]}
             anchor="bottom-left"
             offset={[-2, -40]}
-
           >
             <div>
               <p className="is-size-6">{this.state.marker.name}</p>
@@ -258,7 +251,6 @@ class MainMap extends React.Component{
               <a onClick={this.toggleCreate}>Create an Event!</a>
               <br />
               <a onClick={this.showListings}>Events on here!</a>
-
             </div>
           </Popup>}
         </Map>

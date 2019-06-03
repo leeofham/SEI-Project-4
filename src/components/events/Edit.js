@@ -1,10 +1,10 @@
 import React from 'react'
 
-const Create = ({ handleChange, handleSubmit, pubId, pubEvent }) => {
+const Edit = ({ handleChangeEdit, handleSubmitEdit, pubId, pubEvent }) => {
   return(
     <section className="section">
       <div className="container">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmitEdit}>
           <div className="field">
             <label className="label">Date</label>
             <div className="control">
@@ -12,8 +12,8 @@ const Create = ({ handleChange, handleSubmit, pubId, pubEvent }) => {
                 className="input"
                 name="date"
                 placeholder="12/9/2019"
-                value={pubEvent.date || ''}
-                onChange={handleChange}
+                onChange={handleChangeEdit}
+                defaultValue={pubEvent.date || ''}
               />
             </div>
 
@@ -25,8 +25,8 @@ const Create = ({ handleChange, handleSubmit, pubId, pubEvent }) => {
                 className="input"
                 name="start"
                 placeholder="eg: 17:00"
-                onChange={handleChange}
-                value={pubEvent.start || ''}
+                onChange={handleChangeEdit}
+                defaultValue={pubEvent.start || ''}
               />
             </div>
 
@@ -38,8 +38,8 @@ const Create = ({ handleChange, handleSubmit, pubId, pubEvent }) => {
                 className="input"
                 name="end"
                 placeholder="eg: 21:00"
-                onChange={handleChange}
-                value={pubEvent.end || ''}
+                onChange={handleChangeEdit}
+                defaultValue={pubEvent.end || ''}
               />
             </div>
           </div>
@@ -49,11 +49,11 @@ const Create = ({ handleChange, handleSubmit, pubId, pubEvent }) => {
               <h1 className="subtitle">{pubId} </h1>
             </div>
           </div>
-          <button className="button is-primary">Create an event</button>
+          <button className="button is-primary">Update your event</button>
         </form>
       </div>
     </section>
   )
 }
 
-export default Create
+export default Edit

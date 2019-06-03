@@ -1,10 +1,10 @@
 import React from 'react'
 
-const Create = ({ handleChange, handleSubmit, pubId }) => {
+const Create = ({ handleChangeCreate, handleSubmitCreate, pubId }) => {
   return(
     <section className="section">
       <div className="container">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmitCreate}>
           <div className="field">
             <label className="label">Date</label>
             <div className="control">
@@ -12,7 +12,7 @@ const Create = ({ handleChange, handleSubmit, pubId }) => {
                 className="input"
                 name="date"
                 placeholder="12/9/2019"
-                onChange={handleChange}
+                onChange={handleChangeCreate}
               />
             </div>
 
@@ -24,7 +24,7 @@ const Create = ({ handleChange, handleSubmit, pubId }) => {
                 className="input"
                 name="start"
                 placeholder="eg: 17:00"
-                onChange={handleChange}
+                onChange={handleChangeCreate}
               />
             </div>
 
@@ -36,7 +36,7 @@ const Create = ({ handleChange, handleSubmit, pubId }) => {
                 className="input"
                 name="end"
                 placeholder="eg: 21:00"
-                onChange={handleChange}
+                onChange={handleChangeCreate}
               />
             </div>
           </div>

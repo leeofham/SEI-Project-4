@@ -30,7 +30,7 @@ const LoginForm = ({ handleChange, handleSubmit }) => {
         </div>
       </div>
       <button className="button is-primary">Login</button>
-      <Link to='/register'><button className="button is-primary">Register</button></Link>
+      <Link to='/register'><button className="button is-primary register">Register</button></Link>
     </form>
   )
 }

@@ -9,7 +9,6 @@ import Navbar from './components/common/Navbar'
 import Home from './components/common/Home.js'
 import Register from './components/common/Register.js'
 import MainMap from './components/map/MainMap.js'
-import PubShow from './components/events/Pub.js'
 import Create from './components/events/Create.js'
 
 import 'bulma'
@@ -22,7 +21,6 @@ class App extends React.Component {
         <div>
           <Navbar />
           <Switch>
-            <Route path="/pub/:id" component={PubShow} />
             <Route path="/create" component={Create} />
             <Route path="/map" component={MainMap} />
             <Route path="/register" component={Register} />
