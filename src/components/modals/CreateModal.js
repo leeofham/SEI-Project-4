@@ -2,7 +2,7 @@ import React from 'react'
 
 import Create from '../events/Create'
 
-const CreateModal = ({ create, toggleCreate, handleChangeCreate, handleSubmitCreate, marker }) => {
+const CreateModal = ({ create, toggleCreate, handleChangeCreate, handleSubmitCreate, marker, errors }) => {
   return (
     <div className={`modal ${create ? ' is-active' : ''}`}>
       <div className="modal-background"></div>
@@ -16,6 +16,7 @@ const CreateModal = ({ create, toggleCreate, handleChangeCreate, handleSubmitCre
             handleChangeCreate={handleChangeCreate}
             handleSubmitCreate={handleSubmitCreate}
             pubId={marker.name}
+            errors={errors}
           />
         </section>
       </div>

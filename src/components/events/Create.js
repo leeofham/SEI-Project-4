@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Create = ({ handleChangeCreate, handleSubmitCreate, pubId }) => {
+const Create = ({ handleChangeCreate, handleSubmitCreate, pubId, errors }) => {
   return(
     <section className="section">
       <div className="container">
@@ -15,7 +15,7 @@ const Create = ({ handleChangeCreate, handleSubmitCreate, pubId }) => {
                 onChange={handleChangeCreate}
               />
             </div>
-
+            {errors.date && <div className="help is-danger">{errors.date[0]}</div>}
           </div>
           <div className="field">
             <label className="label">Start time</label>
@@ -27,7 +27,7 @@ const Create = ({ handleChangeCreate, handleSubmitCreate, pubId }) => {
                 onChange={handleChangeCreate}
               />
             </div>
-
+            {errors.start && <div className="help is-danger">{errors.start[0]}</div>}
           </div>
           <div className="field">
             <label className="label">End time</label>
@@ -39,6 +39,7 @@ const Create = ({ handleChangeCreate, handleSubmitCreate, pubId }) => {
                 onChange={handleChangeCreate}
               />
             </div>
+            {errors.end && <div className="help is-danger">{errors.end[0]}</div>}
           </div>
           <div className="field">
             <label className="label">Venue</label>

@@ -16,7 +16,6 @@ const Edit = ({ handleChangeEdit, handleSubmitEdit, pubId, pubEvent }) => {
                 defaultValue={pubEvent.date || ''}
               />
             </div>
-
           </div>
           <div className="field">
             <label className="label">Start time</label>
@@ -29,7 +28,6 @@ const Edit = ({ handleChangeEdit, handleSubmitEdit, pubId, pubEvent }) => {
                 defaultValue={pubEvent.start || ''}
               />
             </div>
-
           </div>
           <div className="field">
             <label className="label">End time</label>

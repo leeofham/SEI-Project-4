@@ -17,9 +17,7 @@ class MainMap extends React.Component{
     super()
 
     this.state = {
-      events: {
-
-      },
+      events: {},
       currentLocation: {
         lat: false,
         lng: false
@@ -29,11 +27,12 @@ class MainMap extends React.Component{
       zoom: [12],
       popup: false,
       pubId: '',
+      pubEvent: '',
+      eventListings: [],
       create: false,
       listing: false,
       edit: false,
-      eventListings: [],
-      pubEvent: ''
+      errors: {}
     }
 
     this.toggleCreate = this.toggleCreate.bind(this)
@@ -49,12 +48,10 @@ class MainMap extends React.Component{
     this.showListings = this.showListings.bind(this)
     this.filterArray = this.filterArray.bind(this)
     this.getDayOfWeek = this.getDayOfWeek.bind(this)
-
     this.getEvent = this.getEvent.bind(this)
     this.deleteEvent = this.deleteEvent.bind(this)
     this.delete = this.delete.bind(this)
     this.canModify = this.canModify.bind(this)
-
   }
 
   componentDidMount() {
@@ -62,7 +59,6 @@ class MainMap extends React.Component{
       const { latitude, longitude } = position.coords
       this.setState({ currentLocation: {lng: latitude, lat: longitude }})
     })
-
     axios('/api/yelp/pubs')
       .then(res => this.setState({ pubs: res.data }))
     axios('/api/events')
@@ -81,6 +77,7 @@ class MainMap extends React.Component{
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(() => this.setState({create: !this.state.create}))
+      .catch(err => this.setState({ errors: err.response.data.errors }))
   }
 
   handleChangeEdit(e) {
@@ -95,6 +92,7 @@ class MainMap extends React.Component{
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(() => window.location.reload())
+      .catch(err => this.setState({ errors: err.response.data.errors }))
   }
 
   delete(e) {
@@ -122,6 +120,7 @@ class MainMap extends React.Component{
     }
     })
   }
+
   deleteEvent(){
     this.setState({pubEventId: event.target.value})
     this.delete(event.target.value)
@@ -186,7 +185,6 @@ class MainMap extends React.Component{
     console.log(this.state)
     return(
       <main>
-
         <MainModal
           listing={this.state.listing}
           toggleListing={this.toggleListing}
@@ -203,6 +201,7 @@ class MainMap extends React.Component{
           handleChangeCreate={this.handleChangeCreate}
           handleSubmitCreate={this.handleSubmitCreate}
           marker={this.state.marker}
+          errors={this.state.errors}
         />
 
         <EditModal
@@ -233,8 +232,6 @@ class MainMap extends React.Component{
                 src='./assets/map-pin.png'
                 width='30px'
               />
-
-
             </Marker>
           )}
 
@@ -258,6 +255,5 @@ class MainMap extends React.Component{
     )
   }
 }
-
 
 export default MainMap
