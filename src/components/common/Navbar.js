@@ -35,8 +35,8 @@ class Navbar extends React.Component {
 
           <div className="navbar-brand">
 
-            {Auth.isAuthenticated() && <Link to="/map" className="navbar-item display is-size-4">Drinking Sessions</Link>}
-            {!Auth.isAuthenticated() && <Link to="/" className="navbar-item display is-size-4">Drinking Sessions</Link>}
+            {Auth.isAuthenticated() && <Link to="/map" className="navbar-item display is-size-4">Drinks on me</Link>}
+            {!Auth.isAuthenticated() && <Link to="/" className="navbar-item display is-size-4">Drinks on me</Link>}
 
             <a
               role="button"

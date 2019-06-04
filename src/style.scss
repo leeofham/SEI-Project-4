@@ -8,11 +8,24 @@ $darkGrey: #444444;
 
 @import url('https://fonts.googleapis.com/css?family=Oswald&display=swap');
 
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden
+}
+
+.home-page-link{
+  color: $buttonPrimary;
+  &:hover{
+    color: $darkBlue;
+  }
+}
+
 .navbar{
   background-color: $darkBlue;
   font-family: 'Oswald', sans-serif;
   .container, .navbar-brand, .navbar-item, .display.is-size-4{
-    color: white; 
+    color: white;
     font-weight:400;
   }
 }
@@ -40,11 +53,6 @@ button.button.is-danger{
   }
 }
 
-div.column.is-one-third-desktop.is-full-tablet.login-form{
-  background: $grey;
-  border: 1px solid $darkGrey;
-}
-
 div.hero-body{
   background-color: $grey;
 }
@@ -68,11 +76,30 @@ div.hero-body{
   background-size: cover;
   font-family: 'Oswald', sans-serif;
 
-  .column.is-one-third-desktop.is-full-tablet.home-title{
+  div.column.is-one-third-desktop.is-full-tablet.login-form{
+    background: $grey;
+    border: 1px solid $darkGrey;
+    height: 225px;
+  }
+
+  div.column.is-one-third-desktop.is-full-tablet.home-title{
+    background: $grey;
+    border: 1px solid $darkGrey;
     margin-right: 20%;
-    h1{
-      letter-spacing: 1.5px;
-      margin-bottom: 30px;
+    h2{
+      color: #222222;
+    }
+  }
+
+}
+
+$breakpoint-tablet: 1023px;
+
+@media (max-width: $breakpoint-tablet) {
+  div.hero-body{
+    div.column.is-one-third-desktop.is-full-tablet.home-title{
+      margin-right: 0px;
+      margin-bottom: 20px;
     }
   }
 }

@@ -18,11 +18,9 @@ class MainMap extends React.Component{
 
     this.state = {
       events: {},
-      currentLocation: {
-        lat: false,
-        lng: false
-      },
-      pubs: null,
+      locationFound: false,
+      currentLocation: null,
+      pubs: false,
       marker: {},
       zoom: [12],
       popup: false,
@@ -35,6 +33,8 @@ class MainMap extends React.Component{
       edit: false,
       errors: {}
     }
+
+    this.startApp = this.startApp.bind(this)
 
     this.toggleCreate = this.toggleCreate.bind(this)
     this.toggleEdit = this.toggleEdit.bind(this)
@@ -55,13 +55,25 @@ class MainMap extends React.Component{
     this.canModify = this.canModify.bind(this)
   }
 
-  componentDidMount() {
+  startApp(){
     navigator.geolocation.getCurrentPosition((position) => {
       const { latitude, longitude } = position.coords
       this.setState({ currentLocation: {lng: latitude, lat: longitude }})
     })
-    axios('/api/yelp/pubs')
-      .then(res => this.setState({ pubs: res.data }))
+    if(this.state.currentLocation){
+      const lat = this.state.currentLocation.lng
+      const lng = this.state.currentLocation.lat
+
+      axios.get('/api/yelp/pubs',{
+        params: {lat, lng}
+      })
+        .then(res => this.setState({ pubs: res.data, locationFound: true }))
+        .catch(err => console.error(err))
+    }
+  }
+
+  componentDidMount() {
+
     axios('/api/events')
       .then(res => this.setState({ eventListings: res.data }))
   }
@@ -185,10 +197,12 @@ class MainMap extends React.Component{
   }
 
   render(){
-    {if(!this.state.pubs)
+    {if(!this.state.locationFound)
       return(
-        <div className='loading-image'></div>
+        <div className='loading-image'>{this.startApp()}</div>
+
       )}
+    console.log(this.state)
     return(
       <main>
         <MainModal
@@ -218,7 +232,6 @@ class MainMap extends React.Component{
           marker={this.state.marker}
           pubEvent={this.state.pubEvent}
         />
-
         <Map
           style = "mapbox://styles/mapbox/streets-v9"
           center = {[this.state.currentLocation.lat, this.state.currentLocation.lng ]}
@@ -227,7 +240,7 @@ class MainMap extends React.Component{
             height: '100vh',
             width: '100vw'
           }}>
-          {this.state.pubs && this.state.pubs.businesses.map(marker =>
+          {this.state.pubs.businesses && this.state.pubs.businesses.map(marker =>
             <Marker
               key={marker.id}
               coordinates={[marker.coordinates.longitude, marker.coordinates.latitude]}
@@ -242,20 +255,21 @@ class MainMap extends React.Component{
           )}
 
           {this.state.popup &&
-          <Popup
-            coordinates={[this.state.marker.coordinates.longitude, this.state.marker.coordinates.latitude]}
-            anchor="bottom-left"
-            offset={[-2, -40]}
-          >
-            <div>
-              <p className="is-size-6">{this.state.marker.name}</p>
-              <p>{this.state.marker.location.address1}</p>
-              <p>{this.state.marker.location.zip_code}</p>
-              <a onClick={this.toggleCreate}>Create an Event!</a>
-              <br />
-              <a onClick={this.showListings}>Events on here!</a>
-            </div>
-          </Popup>}
+            <Popup
+              coordinates={[this.state.marker.coordinates.longitude, this.state.marker.coordinates.latitude]}
+              anchor="bottom-left"
+              offset={[-2, -40]}
+            >
+              <div>
+                <p className="is-size-6">{this.state.marker.name}</p>
+                <p>{this.state.marker.location.address1}</p>
+                <p>{this.state.marker.location.zip_code}</p>
+                <a onClick={this.toggleCreate}>Create an Event!</a>
+                <br />
+                <a onClick={this.showListings}>Events on here!</a>
+              </div>
+            </Popup>
+          }
         </Map>
       </main>
     )

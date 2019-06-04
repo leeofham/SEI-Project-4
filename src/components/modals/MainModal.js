@@ -2,7 +2,7 @@ import React from 'react'
 
 const MainModal = ( {listing, toggleListing, filterArray, canModify, getDayOfWeek, toggleEdit, deleteEvent} ) => {
   return(
-    <div className={`modal ${listing ? ' is-active' : ''}`}>
+    <div className={`modal animated ${listing ? ' bounceInRight is-active' : ' '}`}>
       <div className="modal-background"></div>
       <div className="modal-card">
         <header className="modal-card-head">

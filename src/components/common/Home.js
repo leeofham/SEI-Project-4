@@ -3,6 +3,7 @@ import LoginForm from './LoginForm'
 import axios from 'axios'
 import Auth from '../lib/Auth'
 import Flash from '../lib/Flash'
+import { Link } from 'react-router-dom'
 
 class Home extends React.Component{
   constructor() {
@@ -49,11 +50,13 @@ class Home extends React.Component{
           <div className="container">
             <div className="columns is-centered is-multiline">
               <div className="column is-one-third-desktop is-full-tablet home-title">
-                <h1 className="title">
-                  Drinking sessions
-                </h1>
                 <h2 className="subtitle">
-                  The app that connects you with your friends in your local area, so you can arrange your next pub trip.
+                  Drinks on me is the app that connects you with people in your local area, so you can arrange your next pub trip.<br/><br/>
+
+                  1) Sign up for free <Link to='/register' className='home-page-link'>Here.</Link><br/>
+                  2) Let us use your location to find the nearest pubs.<br/>
+                  3) Click on the pub and create an event or check out who is drinking there.
+
                 </h2>
               </div>
               <div className="column is-one-third-desktop is-full-tablet login-form">

@@ -4,7 +4,7 @@ import Create from '../events/Create'
 
 const CreateModal = ({ create, toggleCreate, handleChangeCreate, handleSubmitCreate, marker, errors }) => {
   return (
-    <div className={`modal ${create ? ' is-active' : ''}`}>
+    <div className={`modal animated ${create ? ' bounceInRight is-active ' : ' '}`}>
       <div className="modal-background"></div>
       <div className="modal-card">
         <header className="modal-card-head">

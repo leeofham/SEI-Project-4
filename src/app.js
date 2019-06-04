@@ -12,6 +12,7 @@ import MainMap from './components/map/MainMap.js'
 import Create from './components/events/Create.js'
 
 import 'bulma'
+import 'animate.css'
 import './style.scss'
 
 class App extends React.Component {

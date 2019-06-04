@@ -4,7 +4,7 @@ import Edit from '../events/Edit'
 
 const EditModal = ( {edit, toggleEdit, handleChangeEdit, handleSubmitEdit, marker, pubEvent} ) => {
   return(
-    <div className={`modal ${edit ? ' is-active' : ''}`}>
+    <div className={`modal animated ${edit ? ' bounceInLeft is-active' : ''}`}>
       <div className="modal-background"></div>
       <div className="modal-card">
         <header className="modal-card-head">
