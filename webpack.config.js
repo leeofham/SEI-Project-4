@@ -43,8 +43,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       { from: 'src/assets', to: 'assets' }
-    ]),
-    new Dotenv()
+    ])
   ],
   node: {
     fs: 'empty'
