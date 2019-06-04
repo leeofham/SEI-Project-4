@@ -1,7 +1,8 @@
 import React from 'react'
 import LoginForm from './LoginForm'
 import axios from 'axios'
-import Auth from '../../lib/Auth'
+import Auth from '../lib/Auth'
+import Flash from '../lib/Flash'
 
 class Home extends React.Component{
   constructor() {
@@ -9,12 +10,12 @@ class Home extends React.Component{
 
     this.state = {
       data: {},
-      errors: {}
+      errors: ''
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-
+    this.errorMessage = this.errorMessage.bind(this)
   }
 
   handleChange(e) {
@@ -28,9 +29,17 @@ class Home extends React.Component{
     axios.post('/api/login', this.state.data)
       .then(res => {
         Auth.setToken(res.data.token)
+        Flash.setMessage('success', res.data.message)
         this.props.history.push('/map')
       })
-      .catch(() => this.setState({ error: 'Invalid credentials' }))
+      .catch(() => this.setState({ errors: 'Invalid credentials' }))
+  }
+
+  errorMessage(){
+    if(this.state.errors !== ''){
+      return true
+    }
+
   }
 
   render(){
@@ -52,8 +61,10 @@ class Home extends React.Component{
                   handleChange={this.handleChange}
                   handleSubmit={this.handleSubmit}
                   data={this.state.data}
-                  errors={this.state.errors}
+                  state={this.state}
+                  errorMessage={this.errorMessage}
                 />
+
               </div>
             </div>
           </div>
@@ -62,8 +73,5 @@ class Home extends React.Component{
     )
   }
 }
-
-
-
 
 export default Home

@@ -17,7 +17,7 @@ def register():
         user = User(**data)
         db.commit()
     except ValidationError as error:
-        return jsonify({'error': error.messages}), 422
+        return jsonify({'errors': error.messages}), 422
 
 
     return jsonify({

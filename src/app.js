@@ -1,10 +1,10 @@
-require('dotenv').config()
 
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { HashRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Navbar from './components/common/Navbar'
+import FlashMessages from './components/common/FlashMessages'
 
 import Home from './components/common/Home.js'
 import Register from './components/common/Register.js'
@@ -20,6 +20,7 @@ class App extends React.Component {
       <Router>
         <div>
           <Navbar />
+          <FlashMessages />
           <Switch>
             <Route path="/create" component={Create} />
             <Route path="/map" component={MainMap} />

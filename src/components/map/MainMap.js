@@ -2,7 +2,7 @@ import React from 'react'
 import ReactMapboxGl, { Marker, Popup } from 'react-mapbox-gl'
 
 import axios from 'axios'
-import Auth from '../../lib/Auth'
+import Auth from '../lib/Auth'
 
 import MainModal from '../modals/MainModal'
 import CreateModal from '../modals/CreateModal'
@@ -30,6 +30,7 @@ class MainMap extends React.Component{
       pubEvent: '',
       eventListings: [],
       create: false,
+      eventCreated: false,
       listing: false,
       edit: false,
       errors: {}
@@ -76,7 +77,10 @@ class MainMap extends React.Component{
     axios.post('/api/events', this.state.events, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
-      .then(() => this.setState({create: !this.state.create}))
+      .then(() => {
+        this.setState({create: !this.state.create})
+        this.setState({eventCreated: false})
+      })
       .catch(err => this.setState({ errors: err.response.data.errors }))
   }
 
@@ -100,7 +104,10 @@ class MainMap extends React.Component{
     axios.delete(`/api/events/${e}`,{
       headers: { 'Authorization': `Bearer ${token}` }
     })
-      .then(() => window.location.reload())
+      .then(() => {
+        window.location.reload()
+      }
+      )
   }
 
   markerClicked(marker){
@@ -182,7 +189,6 @@ class MainMap extends React.Component{
       return(
         <div className='loading-image'></div>
       )}
-    console.log(this.state)
     return(
       <main>
         <MainModal

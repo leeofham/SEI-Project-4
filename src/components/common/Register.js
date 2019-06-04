@@ -27,7 +27,7 @@ class Register extends React.Component {
 
     axios.post('/api/register', this.state.data)
       .then(() => this.props.history.push('/')) // redirect the user to the login page...
-      .catch(err => this.setState({ errors: err.response.data.errors }))
+      .catch(err => this.setState({errors: err.response.data.errors }))
   }
 
   render() {
@@ -48,7 +48,7 @@ class Register extends React.Component {
                       onChange={this.handleChange}
                     />
                   </div>
-
+                  {this.state.errors.username && <div className="help is-danger">{this.state.errors.username}</div>}
                 </div>
                 <div className="field">
                   <label className="label">Email</label>
@@ -60,7 +60,7 @@ class Register extends React.Component {
                       onChange={this.handleChange}
                     />
                   </div>
-
+                  {this.state.errors.email && <div className="help is-danger">{this.state.errors.email}</div>}
                 </div>
                 <div className="field">
                   <label className="label">Password</label>
@@ -73,6 +73,7 @@ class Register extends React.Component {
                       onChange={this.handleChange}
                     />
                   </div>
+                  {this.state.errors.password && <div className="help is-danger">{this.state.errors.password}</div>}
                 </div>
                 <div className="field">
                   <label className="label">Password Confirmation</label>
@@ -85,7 +86,7 @@ class Register extends React.Component {
                       onChange={this.handleChange}
                     />
                   </div>
-
+                  {this.state.errors.password_confirmation && <div className="help is-danger">{this.state.errors.password_confirmation}</div>}
                 </div>
                 <button className="button is-primary">Register</button>
               </form>
@@ -99,7 +100,7 @@ class Register extends React.Component {
 
 export default Register
 
-// {this.state.errors.username && <div className="help is-danger">{this.state.errors.username}</div>}
-// {this.state.errors.email && <div className="help is-danger">{this.state.errors.email}</div>}
-// {this.state.errors.password && <div className="help is-danger">{this.state.errors.password}</div>}
-// {this.state.errors.passwordConfirmation && <div className="help is-danger">{this.state.errors.passwordConfirmation}</div>}
+
+//
+//
+//

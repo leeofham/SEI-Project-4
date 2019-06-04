@@ -1,8 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-
-const LoginForm = ({ handleChange, handleSubmit }) => {
+const LoginForm = ({ handleChange, handleSubmit, state, errorMessage }) => {
   return(
     <form onSubmit={handleSubmit}>
       <div className="field">
@@ -13,7 +12,6 @@ const LoginForm = ({ handleChange, handleSubmit }) => {
             name="email"
             placeholder="eg: john.smith@gmail.com"
             onChange={handleChange}
-
           />
         </div>
       </div>
@@ -28,6 +26,7 @@ const LoginForm = ({ handleChange, handleSubmit }) => {
             onChange={handleChange}
           />
         </div>
+        {errorMessage() && <div className="help is-danger">{state.errors}</div>}
       </div>
       <button className="button is-primary">Login</button>
       <Link to='/register'><button className="button is-primary register">Register</button></Link>

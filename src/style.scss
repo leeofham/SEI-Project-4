@@ -9,10 +9,10 @@ $darkGrey: #444444;
 @import url('https://fonts.googleapis.com/css?family=Oswald&display=swap');
 
 .navbar{
-  // background-color: $darkBlue;
+  background-color: $darkBlue;
   font-family: 'Oswald', sans-serif;
   .container, .navbar-brand, .navbar-item, .display.is-size-4{
-    // color: white;
+    color: white; 
     font-weight:400;
   }
 }

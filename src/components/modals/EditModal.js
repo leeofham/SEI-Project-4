@@ -24,5 +24,4 @@ const EditModal = ( {edit, toggleEdit, handleChangeEdit, handleSubmitEdit, marke
   )
 }
 
-
 export default EditModal
