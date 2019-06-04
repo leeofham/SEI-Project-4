@@ -11,6 +11,7 @@ def pubs():
     headers = {'Authorization': f'Bearer {api_key}'}
 
     r = requests.get('https://api.yelp.com/v3/businesses/search', headers=headers, params=payload)
+    print(r.text)
     return r.text
 
 @router.route('/yelp/pubs/<pub_id>')
